@@ -16,6 +16,7 @@
 # Define standard Oracle environment paths
 ORACLE_BASE="/u01/app/oracle"
 ORACLE_SID="cdb1" 
+
 CDB_SERVICE_NAME="orcl.localdomain" # Use the CDB service name for FRA configuration
 
 # Paths for the new configuration
@@ -23,7 +24,7 @@ RMAN_SCRIPT_DIR="$ORACLE_BASE/admin/$ORACLE_SID/scripts/rman"
 RMAN_LOG_DIR="$ORACLE_BASE/admin/$ORACLE_SID/logs/rman"
 TEST_SCRIPT_DIR="$ORACLE_BASE/admin/$ORACLE_SID/scripts/test_scripts/backup_recovery_tests"
 FRA_DIR="$ORACLE_BASE/oradata/$ORACLE_SID/FRA"
-ARCHIVE_DIR="/u02/rman/$ORACLE_SID/stable_archives"
+ARCHIVE_DIR="/u02/rman/cdb1/stable_archives"
 
 # Source directories for deployment scripts (as provided in the request)
 DEPLOY_BACKUP_SCRIPTS="/opt/dba_deployment/backup/backup_rman_scripts"
@@ -45,6 +46,7 @@ else
     CONFIG_DB_PASS="$1"
 fi
 
+# CORRECTED: Use the CDB_SERVICE_NAME for connecting to the CDB for FRA config.
 # We will use TNS-less format: user/pass@service_name as sysdba
 CONNECT_STRING="$CONFIG_DB_USER/$CONFIG_DB_PASS@localhost:1521/$CDB_SERVICE_NAME as sysdba"
 
@@ -227,7 +229,7 @@ else
 fi
 
 # --- 7. Create Log Directory for Backup Scripts ---
-FINAL_LOG_DIR="$ORACLE_BASE/admin/$ORACLE_SID/logs/rman"
+FINAL_LOG_DIR="$ORACLE_BASE/admin/cdb1/logs/rman"
 echo "--- 7. Creating final RMAN log directory: $FINAL_LOG_DIR ---"
 mkdir -p "$FINAL_LOG_DIR"
 chown oracle:dba "$FINAL_LOG_DIR"

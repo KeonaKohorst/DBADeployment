@@ -1,5 +1,5 @@
 
-SQL*Loader: Release 19.0.0.0.0 - Production on Tue Dec 2 19:14:56 2025
+SQL*Loader: Release 19.0.0.0.0 - Production on Tue Dec 2 23:13:11 2025
 Version 19.3.0.0.0
 
 Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
@@ -51,8 +51,8 @@ Total logical records read:         10001
 Total logical records rejected:         0
 Total logical records discarded:        0
 
-Run began on Tue Dec 02 19:14:56 2025
-Run ended on Tue Dec 02 19:15:00 2025
+Run began on Tue Dec 02 23:13:11 2025
+Run ended on Tue Dec 02 23:13:14 2025
 
-Elapsed time was:     00:00:04.30
-CPU time was:         00:00:00.10
+Elapsed time was:     00:00:02.89
+CPU time was:         00:00:00.06

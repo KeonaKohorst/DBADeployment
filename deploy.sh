@@ -4,60 +4,25 @@
 JDBC_OPTS="?oracle.jdbc.restrictGetTables=false&internal_logon=sysdba"
 # Only the PDB URL is necessary now
 DB_PDB_URL="jdbc:oracle:thin:@//localhost:1521/orclpdb.localdomain${JDBC_OPTS}" 
-DB_PDB_SERVICE_NAME="orclpdb.localdomain"
 
 DB_USER="sys"
-# --- Prompt for Database Password (DB_PASS) and CHECK THAT IT WORKS---
-UTIL_DIR="/opt/dba_deployment/util"
-TEST_CONNECTION_SCRIPT="$UTIL_DIR/test_db_connection.sh"
-
-# Ensure the utility script exists and source it
-if [ -f "$TEST_CONNECTION_SCRIPT" ]; then
-    source "$TEST_CONNECTION_SCRIPT"
-else
-    echo "CRITICAL ERROR: Utility script $TEST_CONNECTION_SCRIPT not found. Aborting."
-    exit 1
-fi
-
-DB_PASS="" # Initialize variable
-MAX_ATTEMPTS=3
-ATTEMPTS=0
-
-while [ "$ATTEMPTS" -lt "$MAX_ATTEMPTS" ]; do
-    echo -n "Enter the DB_PASS for user '$DB_USER' for connection to '$DB_PDB_SERVICE_NAME': "
-    read -r -s DB_PASS
-    echo
-
-    # Test the connection with the provided password, passing all required arguments
-    echo "--- Testing Database Connection ($((ATTEMPTS + 1))/$MAX_ATTEMPTS) ---"
-    test_db_connection "$DB_USER" "$DB_PASS" "$DB_PDB_SERVICE_NAME" 
-
-    if [ $? -eq 0 ]; then
-        echo "--- Connection validated. Proceeding with deployment verification. ---"
-        break # Exit the loop, password is good
-    else
-        ATTEMPTS=$((ATTEMPTS + 1))
-        echo "--- Invalid password or connection error. Please try again. ---"
-    fi
-done
-
-# Check if the loop exited due to failure
-if [ "$ATTEMPTS" -ge "$MAX_ATTEMPTS" ]; then
-    echo ""
-    echo "!!! CRITICAL FAILURE: Maximum login attempts reached. Aborting deployment verification. !!!"
-    exit 1
-fi
+# --- Prompt for Database Password (DB_PASS) ---
+echo -n "Enter the DB_PASS for user '$DB_USER': "
+# Read the password into the DB_PASS variable without displaying it on the screen (-s)
+# The -r flag prevents backslash escapes from being interpreted
+read -r -s DB_PASS
+echo
 # The password is now stored in $DB_PASS
 
 # Flyway configuration required for all runs (SYSDBA login and restricting tables)
 FLYWAY_COMMON_OPTS="-user=$DB_USER -password=$DB_PASS -schemas=FLYWAY_HISTORY" 
 
-# --- PHASE 1: PDB Structural Deployment (V1.0.0 to V1.0.2) ---
-echo "--- 1. PHASE 1: Deploying PDB Structure (V1.0.0, V1.0.1, V1.0.2) ---"
+# --- PHASE 1: PDB Structural Deployment (V1.0.0 to V1.0.3) ---
+echo "--- 1. PHASE 1: Deploying PDB Structure (V1.0.0, V1.0.1, V1.0.2, V1.0.3) ---"
 
-# Target the PDB URL, running all scripts up to 1.0.2 (Tables and Indexes)
+# Target the PDB URL, running all scripts up to 1.0.3 (Tables and Indexes)
 # We don't need CDB URL, baselineOnMigrate, or any skip flags anymore!
-flyway -url="$DB_PDB_URL" $FLYWAY_COMMON_OPTS -target="1.0.2" migrate
+flyway -url="$DB_PDB_URL" $FLYWAY_COMMON_OPTS -target="1.0.3" migrate
 
 if [ $? -ne 0 ]; then
     echo "ERROR: Flyway structural migration failed. Aborting."
@@ -106,7 +71,7 @@ fi
 echo "--- 3. Starting Database Configuration ---"
 # --- Call separate scripts for configuration ---
 ./backup/setup_backup_config.sh "$DB_PASS" # The DB_PASS is passed as the first argument ($1) to the script
-#./setup_auditing_config.sh "$DB_PASS"
-#./setup_performance_config.sh "$DB_PASS"
+#./setup_auditing_config.sh
+./setup_performance_config.sh
 
 echo "--- Deployment complete. ---"
