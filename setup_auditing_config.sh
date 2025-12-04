@@ -15,7 +15,7 @@ chown -R oracle audit_selects
 cp -R audit_selects "$DESTINATION/audit_selects"
 
 
--u oracle sqlplus / as sysdba <<EOF
+su - oracle -c "sqlplus / as sysdba <<EOF
 
 -- initial audit set up
 
@@ -104,4 +104,4 @@ EXCEPTION
 END;
 /
 EXIT;
-EOF
+EOF"
