@@ -58,7 +58,7 @@ function run_sql_check_as_oracle() {
     local full_connect_string="${CONNECT_STRING/\%CONFIG_DB_PASS_REPLACE\%/$CONFIG_DB_PASS}"
 
     # Get the expected ORACLE_HOME from the ORACLE_BASE path
-    local ORACLE_HOME_PATH="/u01/app/oracle/product/19.0.0.0/dbhome_1"
+    local ORACLE_HOME_PATH="/u01/app/oracle/product/19.0.0/dbhome_1"
     #local ORACLE_HOME_PATH="$ORACLE_BASE/product/$(ls -1 $ORACLE_BASE/product/ | head -n 1)"
 
     # Execute SQL using su - oracle -c, suppress headers/feedback
