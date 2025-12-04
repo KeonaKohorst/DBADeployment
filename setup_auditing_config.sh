@@ -5,7 +5,7 @@ DESTINATION="/u01/app/oracle/oradata/ORCL/scripts"
 if [ ! -d "$DESTINATION" ]; then
     echo "$DESTINATION directory does not exist. Creating it now..."
     mkdir -p "$DESTINATION"
-    chown oracle:oracle "$DESTINATION"
+    chown -R oracle "$DESTINATION"
     chmod 755 "$DESTINATION"
 fi
 
