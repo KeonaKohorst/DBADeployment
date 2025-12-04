@@ -57,10 +57,18 @@ function run_sql_check_as_oracle() {
     # Replace the placeholder in the CONNECT_STRING with the actual password
     local full_connect_string="${CONNECT_STRING/\%CONFIG_DB_PASS_REPLACE\%/$CONFIG_DB_PASS}"
 
+    # Get the expected ORACLE_HOME from the ORACLE_BASE path
+    local ORACLE_HOME_PATH="$ORACLE_BASE/product/$(ls -1 $ORACLE_BASE/product/ | head -n 1)"
+
     # Execute SQL using su - oracle -c, suppress headers/feedback
     # NOTE: V$ views must be escaped as V\\$ to survive both the outer shell and the su -c shell.
     SQL_OUTPUT=$(
-        su - oracle -c "sqlplus -S /nolog << 'EOF'
+        su - oracle -c "
+            export ORACLE_HOME=$ORACLE_HOME_PATH
+            export ORACLE_SID=$ORACLE_SID
+            export PATH=\$ORACLE_HOME/bin:\$PATH
+            
+            sqlplus -S /nolog << 'EOF'
             CONNECT $full_connect_string
             SET PAGESIZE 0 FEEDBACK OFF HEADING OFF
             $sql_query
