@@ -12,7 +12,10 @@ fi
 # make executable, change owner to oracle, and move directory to scripts 
 chmod -R +x audit_selects 
 chown -R oracle audit_selects
-cp -R audit_selects "$DESTINATION/audit_selects"
+if [ ! -d "$DESTINATION/audit_selects" ]; then
+	echo "$DESTINATION/audit_selects does not exist. Creating it now... "
+	cp -R audit_selects "$DESTINATION/audit_selects"
+fi
 
 
 su - oracle -c "sqlplus / as sysdba <<EOF
