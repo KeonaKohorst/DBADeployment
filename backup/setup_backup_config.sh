@@ -15,6 +15,7 @@
 
 # Define standard Oracle environment paths
 ORACLE_BASE="/u01/app/oracle"
+ORACLE_HOME_PATH='/u01/app/oracle/product/19.0.0/dbhome_1'
 ORACLE_SID="cdb1" 
 CDB_SERVICE_NAME="orcl.localdomain" # Use the CDB service name for FRA configuration
 
@@ -57,7 +58,12 @@ function run_sql_as_oracle() {
     echo "Attempting db connection with string: $CONNECT_STRING"
     # The 'su - oracle -c' command runs the SQL inside the Oracle environment
     # We use the full connect string for SQL*Plus
-    su - oracle -c "sqlplus -S /nolog << EOF
+    su - oracle -c "
+        export ORACLE_HOME=$ORACLE_HOME_PATH
+        export ORACLE_SID=$ORACLE_SID
+        export PATH=\$ORACLE_HOME/bin:\$PATH
+
+        sqlplus -S /nolog << EOF
         CONNECT $CONNECT_STRING
         SET ECHO ON
         SET FEEDBACK ON
@@ -98,7 +104,12 @@ echo "--- 2. Checking and Enabling ARCHIVELOG Mode ---"
 # We will use this block structure repeatedly in this section.
 function run_local_sql_as_oracle() {
     local sql_commands="$1"
-    su - oracle -c "sqlplus -S / as sysdba << EOF
+    su - oracle -c "
+        export ORACLE_HOME=$ORACLE_HOME_PATH
+        export ORACLE_SID=$ORACLE_SID
+        export PATH=\$ORACLE_HOME/bin:\$PATH
+        
+        sqlplus -S / as sysdba << EOF
         SET ECHO ON
         SET FEEDBACK ON
         $sql_commands
