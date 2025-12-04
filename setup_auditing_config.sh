@@ -1,6 +1,21 @@
 #!/bin/bash
 
-sqlplus / as sysdba <<EOF
+# make sure scripts directory exists
+DESTINATION="/u01/app/oracle/oradata/ORCL/scripts"
+if [ ! -d "$DESTINATION" ]; then
+    echo "$DESTINATION directory does not exist. Creating it now..."
+    mkdir -p "$DESTINATION"
+    chown oracle:oracle "$DESTINATION"
+    chmod 755 "$DESTINATION"
+fi
+
+# make executable, change owner to oracle, and move directory to scripts 
+chmod -R +x audit_selects 
+chown -R oracle audit_selects
+cp -R audit_selects "$DESTINATION/audit_selects"
+
+
+-u oracle sqlplus / as sysdba <<EOF
 
 -- initial audit set up
 
