@@ -34,6 +34,10 @@ AUDIT CREATE USER BY ACCESS;
 
 AUDIT GRANT ANY PRIVILEGE BY ACCESS;
 
+AUDIT SELECT, INSERT, UPDATE, DELETE ON stock_user.stocks BY ACCESS;
+
+AUDIT SESSION;
+
 -- create archive table 
 BEGIN
     -- Create table only if not exists
