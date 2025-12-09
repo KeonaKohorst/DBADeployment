@@ -110,4 +110,13 @@ chmod +x audit/setup_auditing_config.sh
 ./audit/setup_auditing_config.sh "$DB_PASS"
 ./performance/setup_performance_config.sh "$DB_PASS"
 
+echo "--- 4. Running Security & Privilege Verification ---"
+chmod +x ./security/test_user_privileges.sh
+./security/test_user_privileges.sh
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: User privilege test failed. Review security/test_user_permissions.sh output."
+    exit 1
+fi
+
 echo "--- Deployment complete. ---"
