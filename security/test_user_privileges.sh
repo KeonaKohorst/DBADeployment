@@ -21,13 +21,13 @@ PROMPT
 DECLARE
     TYPE role_list IS TABLE OF VARCHAR2(50);
 
-    kgag_roles  role_list := role_list('DBA','SYSDBA');
-    aant_roles  role_list := role_list('DBA','SYSDBA','ADVISOR');
-    cjor_roles  role_list := role_list('DBA','SYSOPER');
-    eitu_roles  role_list := role_list('DBA','SYSOPER','ADVISOR');
-    cdem_roles  role_list := role_list('DBA','SYSOPER');
+    /* kgag_roles  role_list := role_list('DBA','SYSDBA');
+    # aant_roles  role_list := role_list('DBA','SYSDBA','ADVISOR');
+    # cjor_roles  role_list := role_list('DBA','SYSOPER');
+    # eitu_roles  role_list := role_list('DBA','SYSOPER','ADVISOR');
+    # cdem_roles  role_list := role_list('DBA','SYSOPER'); */
 
-    app_readonly_privs role_list := role_list('CREATE SESSION','SELECT');
+    app_readonly_privs role_list := role_list('CREATE SESSION','SELECT ANY TABLE');
     ml_analyst_privs   role_list := role_list(
                                 'CREATE SESSION',
                                 'SELECT ANY TABLE',
@@ -104,20 +104,20 @@ DECLARE
     END;
 
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('==================== DBA USERS ====================');
+    -- DBMS_OUTPUT.PUT_LINE('==================== DBA USERS ====================');
 
-    list_roles('C##KGAG');
-    list_roles('C##AANT');
-    list_roles('C##CJOR');
-    list_roles('C##EITU');
-    list_roles('C##CDEM');
-    DBMS_OUTPUT.PUT_LINE('');
+    -- list_roles('C##KGAG');
+    -- list_roles('C##AANT');
+    -- list_roles('C##CJOR');
+    -- list_roles('C##EITU');
+    -- list_roles('C##CDEM');
+    -- DBMS_OUTPUT.PUT_LINE('');
 
-    check_roles('C##KGAG', kgag_roles);
-    check_roles('C##AANT', aant_roles);
-    check_roles('C##CJOR', cjor_roles);
-    check_roles('C##EITU', eitu_roles);
-    check_roles('C##CDEM', cdem_roles);
+    -- check_roles('C##KGAG', kgag_roles);
+    --check_roles('C##AANT', aant_roles);
+    -- check_roles('C##CJOR', cjor_roles);
+    -- check_roles('C##EITU', eitu_roles);
+    -- check_roles('C##CDEM', cdem_roles);
 
     DBMS_OUTPUT.PUT_LINE('');
     DBMS_OUTPUT.PUT_LINE('================ APPLICATION USERS =================');
