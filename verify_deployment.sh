@@ -122,7 +122,7 @@ run_sql_check "SELECT constraint_name FROM all_constraints WHERE owner = 'STOCK_
 run_sql_check "SELECT COUNT(*) FROM stock_user.stocks;" "Data Row Count in STOCK_USER.STOCKS"
 
 ## 8. auditing on stocks table set up 
-run_sql_check "SELECT owner, object_name, sel, ins, upd, del, FROM dba_obj_audit_opts WHERE owner = 'STOCK_USER' AND object_name = 'STOCKS';"
+run_sql_check "SELECT owner, object_name, sel, ins, upd, del FROM dba_obj_audit_opts WHERE owner = 'STOCK_USER' AND object_name = 'STOCKS';"
 
 ## 9. archive log table exists 
 run_sql_check "SELECT table_name FROM all_tables WHERE table_name = 'AUD$_ARCHIVE';"
