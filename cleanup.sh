@@ -112,8 +112,8 @@ else
 fi
 
 echo "---3a. Deleting audit view scripts ---"
-AUDIT_DESTINATION="/u01/app/oracle/oradata/ORCL/scripts/audit_selects
-if [ -d "$AUDIT_DESTINATION"]; then
+AUDIT_DESTINATION="/u01/app/oracle/oradata/ORCL/scripts/audit_selects"
+if [ -d "$AUDIT_DESTINATION" ]; then
     rm -Rf $AUDIT_DESTINATION
 fi
 
