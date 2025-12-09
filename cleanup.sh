@@ -111,6 +111,12 @@ else
     echo "WARNING: Failed to clear crontab (it might already be empty or permissions are incorrect). Proceeding."
 fi
 
+echo "---3a. Deleting audit view scripts ---"
+AUDIT_DESTINATION="/u01/app/oracle/oradata/ORCL/scripts/audit_selects
+if [ -d "$AUDIT_DESTINATION"]; then
+    rm -Rf $AUDIT_DESTINATION
+fi
+
 echo "--- 3. Cleanup Complete ---"
 echo "Database $SERVICE_NAME is now clean and ready for redeployment."
 echo "Execution context has remained as 'root'."
