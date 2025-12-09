@@ -108,6 +108,7 @@ echo "--- 3. Starting Database Configuration ---"
 ./backup/setup_backup_config.sh "$DB_PASS" # The DB_PASS is passed as the first argument ($1) to the script
 chmod +x audit/setup_auditing_config.sh
 ./audit/setup_auditing_config.sh "$DB_PASS"
+./performance/setup_performance_config.sh "$DB_PASS"
 
 echo "--- 4. Running Security & Privilege Verification ---"
 chmod +x ./security/test_user_privileges.sh
@@ -117,7 +118,5 @@ if [ $? -ne 0 ]; then
     echo "ERROR: User privilege test failed. Review security/test_user_permissions.sh output."
     exit 1
 fi
-
-#./setup_performance_config.sh "$DB_PASS"
 
 echo "--- Deployment complete. ---"

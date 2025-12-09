@@ -21,7 +21,7 @@ echo "Running SQL commands as 'oracle' user via 'su - oracle -c'..."
 # --- 1a. Connect to Oracle as 'oracle' user and execute SQL commands ---
 # The entire SQL block is executed by the 'oracle' user in a subshell, 
 # ensuring the main script remains running as 'root'.
-su - oracle -c "sqlplus -S /nolog << EOF
+su - oracle -c "sqlplus -S /nolog << 'EOF'
 CONNECT sys/$DB_PASS@localhost:1521/$SERVICE_NAME as sysdba
 
 -- Alter session to target the specific PDB for cleanup operations
@@ -38,7 +38,7 @@ DROP USER ml_developer CASCADE;
 -- Clean up MONITORING user
 PROMPT Killing any lingering MONITORING sessions...
 BEGIN
-  FOR s IN (SELECT sid, serial# FROM v$session WHERE username = 'MONITORING') LOOP
+  FOR s IN (SELECT sid, serial# FROM v\$session WHERE username = 'MONITORING') LOOP
     EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || s.sid || ',' || s.serial# || ''' IMMEDIATE';
   END LOOP;
 END;

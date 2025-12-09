@@ -14,5 +14,5 @@ GRANT SELECT ON SYS.V_$SQL                           TO monitoring;
 GRANT SELECT ON SYS.V_$STATNAME                      TO monitoring;
 GRANT SELECT ON SYS.V_$SYSSTAT                       TO monitoring;
 GRANT SELECT ON SYS.V_$PGASTAT                       TO monitoring;
-GRANT SELECT ON SYS.UTL_MAIL                         TO monitoring;
-GRANT SELECT ON SYS.UTL_RECOMP                       TO monitoring;
+--GRANT SELECT ON SYS.UTL_MAIL                         TO monitoring;
+--GRANT SELECT ON SYS.UTL_RECOMP                       TO monitoring;
