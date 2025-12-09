@@ -121,6 +121,15 @@ run_sql_check "SELECT constraint_name FROM all_constraints WHERE owner = 'STOCK_
 ## 7. Data Row Count (Expected 10001)
 run_sql_check "SELECT COUNT(*) FROM stock_user.stocks;" "Data Row Count in STOCK_USER.STOCKS"
 
+## 8. auditing on stocks table set up 
+run_sql_check "SELECT owner, object_name, sel, ins, upd, del, FROM dba_obj_audit_opts WHERE owner = 'STOCK_USER' AND object_name = 'STOCKS';"
+
+## 9. archive log table exists 
+run_sql_check "SELECT table_name FROM all_tables WHERE table_name = 'AUD$_ARCHIVE';"
+
+## 10. Check ARCHIVE_PURGE_AUDIT_JOB exists 
+run_sql_check "SELECT job_name FROM dba_scheduler_jobs WHERE job_name = 'ARCHIVE_PURGE_AUDIT_JOB';"
+
 echo " "
 echo "--- ALL VERIFICATION CHECKS FOR SCHEMA PASSED. ---"
 

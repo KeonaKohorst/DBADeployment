@@ -22,6 +22,8 @@ su - oracle -c "sqlplus / as sysdba <<EOF
 
 -- initial audit set up
 
+ALTER SESSION SET CONTAINER = ORCLPDB;
+
 ALTER SYSTEM SET audit_trail = DB, extended SCOPE=SPFILE;
 
 AUDIT CREATE ANY TABLE BY ACCESS;
