@@ -35,6 +35,29 @@ DROP USER app_readonly CASCADE;
 DROP USER ml_analyst CASCADE;
 DROP USER ml_developer CASCADE;
 
+-- Clean up MONITORING user
+PROMPT Killing any lingering MONITORING sessions...
+BEGIN
+  FOR s IN (SELECT sid, serial# FROM v$session WHERE username = 'MONITORING') LOOP
+    EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || s.sid || ',' || s.serial# || ''' IMMEDIATE';
+  END LOOP;
+END;
+/
+
+-- Give Oracle a few seconds to release the sessions
+EXEC DBMS_LOCK.SLEEP(5);
+
+-- Drop the global temporary table definition
+BEGIN
+  EXECUTE IMMEDIATE 'DROP TABLE monitoring.top_sql_log PURGE';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+
+DROP USER monitoring CASCADE;
+
+PROMPT MONITORING user and all objects successfully dropped
+
 -- Drop tablespaces (INCLUDING CONTENTS AND DATAFILES is critical for cleanup)
 PROMPT Dropping tablespaces...
 DROP TABLESPACE stocks_data INCLUDING CONTENTS AND DATAFILES;
