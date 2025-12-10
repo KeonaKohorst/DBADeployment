@@ -1,4 +1,11 @@
--- show all entries from stock_user in last 14 days
+-- =============================================
+-- Author: Cody Jorgenson    
+-- Create date: December 4, 2025
+-- last modified: December 7, 2025
+-- Description: show all entries from stock_user in last 14 days
+-- =============================================
+
+
 
 SET linesize 500;
 COLUMN username FORMAT a20;
@@ -9,5 +16,5 @@ COLUMN sql_text FORMAT a200;
 SELECT username, extended_timestamp, action_name, obj_name, sql_text 
 FROM DBA_AUDIT_TRAIL
 WHERE username = 'stock_user' AND
-	extended_timestamp SYSDATE - 14
+	extended_timestamp >= SYSDATE - 14
 ORDER BY extended_timestamp ASC;

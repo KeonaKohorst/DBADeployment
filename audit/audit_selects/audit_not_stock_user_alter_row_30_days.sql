@@ -1,4 +1,11 @@
--- show updates, inserts and deletes from any user except stock_user in the last 30 days
+-- =============================================
+-- Author: Cody Jorgenson    
+-- Create date: December 4, 2025
+-- last modified: December 7, 2025
+-- Description: show updates, inserts and deletes from any user except stock_user in the last 30 days
+-- =============================================
+
+
 
 SET linesize 500;
 COLUMN username FORMAT a20;

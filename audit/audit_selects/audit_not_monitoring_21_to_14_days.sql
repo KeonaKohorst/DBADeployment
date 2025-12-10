@@ -1,4 +1,11 @@
--- show all entries from all users except monitoring in the last 21 to 14 days ago
+-- =============================================
+-- Author: Cody Jorgenson    
+-- Create date: December 4, 2025
+-- last modified: December 7, 2025
+-- Description: show all entries from all users except monitoring in the last 21 to 14 days ago
+-- =============================================
+
+
 
 SET linesize 500;
 COLUMN username FORMAT a20;
