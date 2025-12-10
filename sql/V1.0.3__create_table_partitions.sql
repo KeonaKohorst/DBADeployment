@@ -1,4 +1,24 @@
--- V1.0.3__create_table_partitions.sql
+-- =================================================================================
+-- Filename: V1.0.3__create_table_partitions.sql
+
+-- Copyright (c) 2025 Emilio Iturbide Gonzalez
+-- This software is licensed under the MIT License, located in the root directory 
+-- of this project (LICENSE file).
+-- ---------------------------------------------------------------------------------
+-- Author(s): Emilio Iturbide Gonzalez
+-- Date Created: November 18, 2025
+-- Date Last Modified: December 9, 2025
+--
+-- Use of AI: 
+-- Gemini AI was used to help debug for the implementation of the script.
+-- All AI-generated suggestions were reviewed, verified, and modified by the author
+-- before inclusion.
+--
+-- Description:
+-- This script modifies the STOCKS table to implement range partitioning based on
+-- the trade_date column. It sets up partitions for quarterly intervals in 2025
+-- and specifies that new partitions should be created every three months.
+-- =================================================================================
 
 -- Set partitions by range (trade_date)
 -- Interval option will continue to create partitions on a 3-month basis after the last partition.
