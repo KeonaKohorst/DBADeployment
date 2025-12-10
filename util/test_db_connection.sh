@@ -1,7 +1,21 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------
-# test_db_connection.sh
-# -----------------------------------------------------------------------------
+# Filename: test_db_connection.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: Dec 2 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
 # Tests database connectivity using SQL*Plus via 'su - oracle -c'.
 #
 # Arguments:

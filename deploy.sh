@@ -1,4 +1,38 @@
 #!/bin/bash
+# ==============================================================================
+# Filename: deploy.sh
+
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 28 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# Automates the deployment of the Oracle Pluggable Database (PDB) using a multi-phase approach 
+# driven by Flyway, SQL Loader, and shell scripts
+#
+#   - Establishes core database structure.
+#
+#   - Loads data using SQL Loader before applying a Flyway marker (V1.0.4) to record the data state. 
+#     Bad file contains duplicate rows only (ours is empty)
+#     Data is synthesized using pandas SDV library in python
+#
+#   - Executes shell scripts to do configurations for backups, auditing, and performance.
+#
+# A note about Flyway: 
+# Flyway is a third party migration tool.
+# It would be preferable in a production environment to use Oracle 
+# native tools and utilities to perform migration to reduce risk of dependencies on tools 
+# that may lose support in the future.
+# ==============================================================================
 
 # --- Set Database Variables ---
 JDBC_OPTS="?oracle.jdbc.restrictGetTables=false&internal_logon=sysdba"

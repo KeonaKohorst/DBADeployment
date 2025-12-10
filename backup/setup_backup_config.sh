@@ -1,8 +1,22 @@
 #!/bin/bash
 
 # ==============================================================================
-# setup_backup_config.sh
+# Filename: setup_backup_config.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
 # ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 29 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
 # 1. Configures the Flash Recovery Area (FRA) size and location.
 # 2. Configures RMAN retention policy and default device types.
 # 3. Creates necessary directories and copies RMAN backup/test scripts.

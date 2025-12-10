@@ -1,9 +1,24 @@
 #!/bin/bash
 #-----------------------------------------------------------------------
-# Script: simulate_restore_from_yearly.sh
-# Purpose: Simulates a data loss event and recovers the entire CDB
-#          (and ORCLPDB) using the RMAN YEARLY COLD backup tagged
-#          'STABLE_YEARLY_BU'.
+# Filename: simulate_restore_from_yearly.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 17 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# Simulates a data loss event and recovers the entire CDB
+# (and ORCLPDB) using the RMAN YEARLY COLD backup tagged STABLE_YEARLY_BU'.
+#
 # Execution: Run manually by the Oracle user.
 # NOTE: This performs a full CDB restore, requiring the CDB to be shut down.
 #-----------------------------------------------------------------------

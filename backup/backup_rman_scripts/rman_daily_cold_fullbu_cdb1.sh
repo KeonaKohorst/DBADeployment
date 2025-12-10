@@ -1,8 +1,24 @@
 #!/bin/bash
 #-----------------------------------------------------------------------
-# Script: rman_daily_coldbu_cdb1.sh
-# Purpose: Executes a daily COLD (offline) full database backup for the cdb1 
-#          container database (CDB). This ensures a consistent backup state.
+# Filename: rman_daily_coldbu_cdb1.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 17 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+# 
+# Description:
+# Executes a daily COLD (offline) full database backup for the cdb1 
+# container database (CDB). This ensures a consistent backup state.
+
 # Execution: Scheduled via cron daily.
 # DISADVANTAGE: Requires downtime during the backup process.
 #-----------------------------------------------------------------------
