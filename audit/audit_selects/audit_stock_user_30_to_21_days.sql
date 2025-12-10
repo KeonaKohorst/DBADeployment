@@ -1,4 +1,11 @@
--- show all entries from stock_user between 30 and 21 days ago
+-- =============================================
+-- Author: Cody Jorgenson    
+-- Create date: December 4, 2025
+-- last modified: December 7, 2025
+-- Description: show all entries from stock_user between 30 and 21 days ago
+-- =============================================
+
+
 
 SET linesize 500;
 COLUMN username FORMAT a20;

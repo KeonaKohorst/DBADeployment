@@ -1,4 +1,10 @@
 #!/bin/bash
+# =============================================
+# Author: Cody Jorgenson    
+# Create date: December 4, 2025
+# last modified: December 7, 2025
+# Description: Setup suditing settings 
+# =============================================
 
 # make sure scripts directory exists
 DESTINATION="/u01/app/oracle/oradata/ORCL/scripts"

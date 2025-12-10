@@ -1,4 +1,11 @@
--- show updates, inderts and deletes from stock_user in last 30 days
+-- =============================================
+-- Author: Cody Jorgenson    
+-- Create date: December 4, 2025
+-- last modified: December 7, 2025
+-- Description: show updates, inderts and deletes from stock_user in last 30 days
+-- =============================================
+
+
 
 SET linesize 500;
 COLUMN username FORMAT a20;

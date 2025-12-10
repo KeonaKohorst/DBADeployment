@@ -1,4 +1,11 @@
--- show all entries from all users
+-- =============================================
+-- Author: Cody Jorgenson    
+-- Create date: December 4, 2025
+-- last modified: December 7, 2025
+-- Description: show all entries from all users
+-- =============================================
+
+
 
 SET linesize 500;
 COLUMN username FORMAT a20;
