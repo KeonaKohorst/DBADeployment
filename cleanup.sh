@@ -1,11 +1,34 @@
 #!/bin/bash
-
 # ==============================================================================
-# cleanup.sh
+# Filename: cleanup.sh
+
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
 # ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 30 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
 # Performs a full cleanup of the target PDB (orclpdb.localdomain), dropping
 # all users, tablespaces, and the Flyway history, allowing for a fresh
 # re-deployment. Executed by and returns control to the 'root' user.
+
+# In a production environment this script should be heavily secure as it is
+# DESTRUCTIVE.
+#
+# This cleanup script would not be appropriate for a production database because 
+# it fully restarts the deployment process rather than recovering to the moment 
+# before the failure.
+
+# An area for improvement is creating a cleanup script that remedies this issue, 
+# so the deployment process does not need to be restarted every time.
 # ==============================================================================
 
 # --- Variables ---

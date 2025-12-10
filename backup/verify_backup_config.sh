@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# ==============================================================================
+# Filename: verify_backup_config.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 29 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# This script ensures the backup configuration worked as expected. This script
+# is ran inside verify_deployment.sh.
+# ==============================================================================
+
 # --- Configuration (Must match setup_backup_config.sh) ---
 DB_USER="sys"
 ORACLE_BASE="/u01/app/oracle"

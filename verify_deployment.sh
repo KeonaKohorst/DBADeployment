@@ -1,4 +1,23 @@
 #!/bin/bash
+# ==============================================================================
+# Filename: verify_deployment.sh 
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: Dec 2 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# This script ensures that the deploy.sh script executed as expected.
+# ==============================================================================
 
 # --- Configuration ---
 # Set the ORACLE_SID and PDB Service Name required for the connection string
