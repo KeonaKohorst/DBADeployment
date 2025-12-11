@@ -1,4 +1,23 @@
 #!/bin/bash
+# ==============================================================================
+# Filename: verify_deployment.sh 
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: Dec 2 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# This script ensures that the deploy.sh script executed as expected.
+# ==============================================================================
 
 # --- Configuration ---
 # Set the ORACLE_SID and PDB Service Name required for the connection string
@@ -112,11 +131,23 @@ run_sql_check "SELECT table_name FROM all_tables WHERE owner = 'STOCK_USER' AND 
 INDEXES_TO_CHECK="'STOCKS_SYMBOL_IDX', 'STOCKS_DATE_IDX'"
 run_sql_check "SELECT index_name FROM all_indexes WHERE owner = 'STOCK_USER' AND index_name IN ($INDEXES_TO_CHECK) ORDER BY index_name;" "Indexes STOCKS_SYMBOL_IDX and STOCKS_DATE_IDX"
 
-## 5. Unique Constraint Exists
+## 5. Partitioned Table Exists (STOCK_USER.STOCKS by RANGE on TRADE_DATE)
+run_sql_check "SELECT table_name FROM all_part_tables WHERE owner = 'STOCK_USER' AND table_name = 'STOCKS';" "Partitioned Table STOCK_USER.STOCKS" 
+
+## 6. Unique Constraint Exists
 run_sql_check "SELECT constraint_name FROM all_constraints WHERE owner = 'STOCK_USER' AND table_name = 'STOCKS' AND constraint_type = 'U' AND constraint_name LIKE '%SYMBOL_DATE_UNIQ%';" "Unique Constraint on STOCKS"
 
-## 6. Data Row Count (Expected 10001)
+## 7. Data Row Count (Expected 10001)
 run_sql_check "SELECT COUNT(*) FROM stock_user.stocks;" "Data Row Count in STOCK_USER.STOCKS"
+
+## 8. auditing on stocks table set up 
+run_sql_check "SELECT owner, object_name, sel, ins, upd, del FROM dba_obj_audit_opts WHERE owner = 'STOCK_USER' AND object_name = 'STOCKS';"
+
+## 9. archive log table exists 
+run_sql_check "SELECT table_name FROM all_tables WHERE table_name = 'AUD$_ARCHIVE';"
+
+## 10. Check ARCHIVE_PURGE_AUDIT_JOB exists 
+run_sql_check "SELECT job_name FROM dba_scheduler_jobs WHERE job_name = 'ARCHIVE_PURGE_AUDIT_JOB';"
 
 echo " "
 echo "--- ALL VERIFICATION CHECKS FOR SCHEMA PASSED. ---"

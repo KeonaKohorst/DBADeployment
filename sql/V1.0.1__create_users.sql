@@ -1,3 +1,25 @@
+/*
+ ===========================================
+ Filename: V1.0.1__create_users.sql
+ 
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: Nov 28 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# This creates the users and assigns their roles/privileges/quotas for the database. 
+  It is used as the first step in the Flyway Automated deployment.
+*/
+
 -- Create Users
 
 CREATE USER APP_READONLY IDENTIFIED BY "pass";
@@ -46,6 +68,9 @@ GRANT READ ANY TABLE TO APP_READONLY;
 
 ALTER USER STOCK_USER QUOTA UNLIMITED ON STOCKS_DATA;
 ALTER USER STOCK_USER QUOTA UNLIMITED ON STOCKS_INDEX;
+
+GRANT CREATE TABLE TO STOCK_USER;
+GRANT CREATE SEQUENCE TO STOCK_USER;
 
 
 -- ML_ANALYST ROLE: Querying, aggregation, materialized views

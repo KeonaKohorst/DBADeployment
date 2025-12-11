@@ -1,4 +1,38 @@
 #!/bin/bash
+# ==============================================================================
+# Filename: deploy.sh
+
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 28 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# Automates the deployment of the Oracle Pluggable Database (PDB) using a multi-phase approach 
+# driven by Flyway, SQL Loader, and shell scripts
+#
+#   - Establishes core database structure.
+#
+#   - Loads data using SQL Loader before applying a Flyway marker (V1.0.4) to record the data state. 
+#     Bad file contains duplicate rows only (ours is empty)
+#     Data is synthesized using pandas SDV library in python
+#
+#   - Executes shell scripts to do configurations for backups, auditing, and performance.
+#
+# A note about Flyway: 
+# Flyway is a third party migration tool.
+# It would be preferable in a production environment to use Oracle 
+# native tools and utilities to perform migration to reduce risk of dependencies on tools 
+# that may lose support in the future.
+# ==============================================================================
 
 # --- Set Database Variables ---
 JDBC_OPTS="?oracle.jdbc.restrictGetTables=false&internal_logon=sysdba"
@@ -52,12 +86,12 @@ fi
 # Flyway configuration required for all runs (SYSDBA login and restricting tables)
 FLYWAY_COMMON_OPTS="-user=$DB_USER -password=$DB_PASS -schemas=FLYWAY_HISTORY" 
 
-# --- PHASE 1: PDB Structural Deployment (V1.0.0 to V1.0.2) ---
-echo "--- 1. PHASE 1: Deploying PDB Structure (V1.0.0, V1.0.1, V1.0.2) ---"
+# --- PHASE 1: PDB Structural Deployment (V1.0.0 to V1.0.3) ---
+echo "--- 1. PHASE 1: Deploying PDB Structure (V1.0.0, V1.0.1, V1.0.2, V1.0.3) ---"
 
-# Target the PDB URL, running all scripts up to 1.0.2 (Tables and Indexes)
+# Target the PDB URL, running all scripts up to 1.0.3 (Tables and Indexes)
 # We don't need CDB URL, baselineOnMigrate, or any skip flags anymore!
-flyway -url="$DB_PDB_URL" $FLYWAY_COMMON_OPTS -target="1.0.2" migrate
+flyway -url="$DB_PDB_URL" $FLYWAY_COMMON_OPTS -target="1.0.3" migrate
 
 if [ $? -ne 0 ]; then
     echo "ERROR: Flyway structural migration failed. Aborting."
@@ -106,7 +140,17 @@ fi
 echo "--- 3. Starting Database Configuration ---"
 # --- Call separate scripts for configuration ---
 ./backup/setup_backup_config.sh "$DB_PASS" # The DB_PASS is passed as the first argument ($1) to the script
-#./setup_auditing_config.sh "$DB_PASS"
-#./setup_performance_config.sh "$DB_PASS"
+chmod +x audit/setup_auditing_config.sh
+./audit/setup_auditing_config.sh "$DB_PASS"
+./performance/setup_performance_config.sh "$DB_PASS"
+
+echo "--- 4. Running Security & Privilege Verification ---"
+chmod +x ./security/test_user_privileges.sh
+./security/test_user_privileges.sh
+
+if [ $? -ne 0 ]; then
+    echo "ERROR: User privilege test failed. Review security/test_user_permissions.sh output."
+    exit 1
+fi
 
 echo "--- Deployment complete. ---"

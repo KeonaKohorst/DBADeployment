@@ -1,0 +1,122 @@
+#!/bin/bash
+# =============================================
+# Author: Cody Jorgenson    
+# Create date: December 4, 2025
+# last modified: December 7, 2025
+# Description: Setup suditing settings 
+# =============================================
+
+# make sure scripts directory exists
+DESTINATION="/u01/app/oracle/oradata/ORCL/scripts"
+if [ ! -d "$DESTINATION" ]; then
+    echo "$DESTINATION directory does not exist. Creating it now..."
+    mkdir -p "$DESTINATION"
+    chown -R oracle "$DESTINATION"
+    chmod 755 "$DESTINATION"
+fi
+
+# make executable, change owner to oracle, and move directory to scripts 
+chmod -R +x audit/audit_selects 
+chown -R oracle audit/audit_selects
+if [ ! -d "$DESTINATION/audit_selects" ]; then
+	echo "$DESTINATION/audit_selects does not exist. Creating it now... "
+	cp -R audit/audit_selects "$DESTINATION/audit_selects"
+fi
+
+
+su - oracle -c "sqlplus / as sysdba <<EOF
+
+-- initial audit setup
+
+ALTER SYSTEM SET audit_trail = DB, extended SCOPE=SPFILE;
+
+ALTER SESSION SET CONTAINER = ORCLPDB;
+
+AUDIT CREATE ANY TABLE BY ACCESS;
+
+AUDIT DROP ANY TABLE BY ACCESS;
+
+AUDIT ALTER SYSTEM BY ACCESS;
+
+AUDIT CREATE USER BY ACCESS;
+
+AUDIT GRANT ANY PRIVILEGE BY ACCESS;
+
+AUDIT SELECT, INSERT, UPDATE, DELETE ON stock_user.stocks BY ACCESS;
+
+AUDIT SESSION;
+
+-- create archive table 
+BEGIN
+    -- Create table only if not exists
+    EXECUTE IMMEDIATE '
+        CREATE TABLE aud$_archive
+        COMPRESS BASIC
+        AS SELECT * FROM sys.aud$ WHERE 1=0
+    ';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE = -955 THEN
+            NULL; -- table already exists
+        ELSE
+            RAISE;
+        END IF;
+END;
+/
+ 
+-- Create index only if not exists
+BEGIN
+    EXECUTE IMMEDIATE '
+        CREATE INDEX aud$_archive_ts_idx
+        ON aud$_archive (timestamp#)
+    ';
+EXCEPTION
+    WHEN OTHERS THEN
+        IF SQLCODE = -955 THEN
+            NULL; -- index already exists
+        ELSE
+            RAISE;
+        END IF;
+END;
+/
+
+
+
+-- function to archive logs and purge them after
+BEGIN
+    DBMS_SCHEDULER.CREATE_JOB (
+        job_name        => 'ARCHIVE_PURGE_AUDIT_JOB',
+        job_type        => 'PLSQL_BLOCK',
+        job_action      => q'[ 
+            DECLARE
+                l_cutoff DATE := TRUNC(SYSDATE) - 30;
+            BEGIN
+                -- Archive rows
+                INSERT /*+ APPEND */ INTO aud$_archive
+                SELECT *
+                FROM sys.aud$
+                WHERE timestamp# < l_cutoff;
+
+                -- Purge rows
+                DELETE FROM sys.aud$
+                WHERE timestamp# < l_cutoff;
+
+                COMMIT;
+            END;
+        ]',
+        start_date      => SYSTIMESTAMP,
+        repeat_interval => 'FREQ=MONTHLY;BYMONTHDAY=1;BYHOUR=02;BYMINUTE=00;BYSECOND=00',
+        enabled         => TRUE,
+        comments        => 'Monthly archive and purge of SYS.AUD$ older than 30 days'
+    );
+EXCEPTION
+	WHEN OTHERS THEN 
+		IF SQLCODE = -27477 THEN 
+			NULL;
+		ELSE 
+			RAISE;
+		END IF;
+END;
+/
+EXIT;
+EOF"

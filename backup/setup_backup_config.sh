@@ -1,8 +1,22 @@
 #!/bin/bash
 
 # ==============================================================================
-# setup_backup_config.sh
+# Filename: setup_backup_config.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
 # ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 29 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
 # 1. Configures the Flash Recovery Area (FRA) size and location.
 # 2. Configures RMAN retention policy and default device types.
 # 3. Creates necessary directories and copies RMAN backup/test scripts.
@@ -15,6 +29,7 @@
 
 # Define standard Oracle environment paths
 ORACLE_BASE="/u01/app/oracle"
+ORACLE_HOME_PATH='/u01/app/oracle/product/19.0.0/dbhome_1'
 ORACLE_SID="cdb1" 
 CDB_SERVICE_NAME="orcl.localdomain" # Use the CDB service name for FRA configuration
 
@@ -57,7 +72,12 @@ function run_sql_as_oracle() {
     echo "Attempting db connection with string: $CONNECT_STRING"
     # The 'su - oracle -c' command runs the SQL inside the Oracle environment
     # We use the full connect string for SQL*Plus
-    su - oracle -c "sqlplus -S /nolog << EOF
+    su - oracle -c "
+        export ORACLE_HOME=$ORACLE_HOME_PATH
+        export ORACLE_SID=$ORACLE_SID
+        export PATH=\$ORACLE_HOME/bin:\$PATH
+
+        sqlplus -S /nolog << EOF
         CONNECT $CONNECT_STRING
         SET ECHO ON
         SET FEEDBACK ON
@@ -98,7 +118,12 @@ echo "--- 2. Checking and Enabling ARCHIVELOG Mode ---"
 # We will use this block structure repeatedly in this section.
 function run_local_sql_as_oracle() {
     local sql_commands="$1"
-    su - oracle -c "sqlplus -S / as sysdba << EOF
+    su - oracle -c "
+        export ORACLE_HOME=$ORACLE_HOME_PATH
+        export ORACLE_SID=$ORACLE_SID
+        export PATH=\$ORACLE_HOME/bin:\$PATH
+        
+        sqlplus -S / as sysdba << EOF
         SET ECHO ON
         SET FEEDBACK ON
         $sql_commands

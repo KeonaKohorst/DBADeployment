@@ -1,8 +1,23 @@
 #!/bin/bash
 #-----------------------------------------------------------------------
-# Script: simulate_pitr_restore.sh
-# Purpose: Simulates a user disaster (mass DELETE) in ORCLPDB and restores
-#          the PDB to a Point-in-Time (PITR) before the disaster occurred.
+# Fileame: simulate_pitr_restore.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 17 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# Simulates a user disaster (mass DELETE) in ORCLPDB and restores
+# the PDB to a Point-in-Time (PITR) before the disaster occurred.
 # Execution: Run manually by the Oracle user.
 #-----------------------------------------------------------------------
 

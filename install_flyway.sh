@@ -1,11 +1,31 @@
 #!/bin/bash
 
 # ==============================================================================
-# install_flyway.sh 
+# Filename: install_flyway.sh 
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
 # ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: Dec 1 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
 # Installs the standalone Flyway CLI into /opt/flyway/flyway-X.Y.Z,
 # creates a symlink to /opt/flyway, and configures the system PATH.
 # MUST BE RUN AS ROOT or with sudo.
+#
+# A note about Flyway: 
+# Flyway is a third party migration tool.
+# It would be preferable in a production environment to use Oracle 
+# native tools and utilities to perform migration to reduce risk of dependencies on tools 
+# that may lose support in the future.
 # ==============================================================================
 
 # --- Configuration Variables ---

@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# ==============================================================================
+# Filename: verify_backup_config.sh
+#
+# Copyright (c) 2025 Keona Gagnier
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Keona Gagnier
+# Date Created: November 29 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# Gemini AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+#
+# Description:
+# This script ensures the backup configuration worked as expected. This script
+# is ran inside verify_deployment.sh.
+# ==============================================================================
+
 # --- Configuration (Must match setup_backup_config.sh) ---
 DB_USER="sys"
 ORACLE_BASE="/u01/app/oracle"
@@ -57,10 +78,19 @@ function run_sql_check_as_oracle() {
     # Replace the placeholder in the CONNECT_STRING with the actual password
     local full_connect_string="${CONNECT_STRING/\%CONFIG_DB_PASS_REPLACE\%/$CONFIG_DB_PASS}"
 
+    # Get the expected ORACLE_HOME from the ORACLE_BASE path
+    local ORACLE_HOME_PATH="/u01/app/oracle/product/19.0.0/dbhome_1"
+    #local ORACLE_HOME_PATH="$ORACLE_BASE/product/$(ls -1 $ORACLE_BASE/product/ | head -n 1)"
+
     # Execute SQL using su - oracle -c, suppress headers/feedback
     # NOTE: V$ views must be escaped as V\\$ to survive both the outer shell and the su -c shell.
     SQL_OUTPUT=$(
-        su - oracle -c "sqlplus -S /nolog << 'EOF'
+        su - oracle -c "
+            export ORACLE_HOME=$ORACLE_HOME_PATH
+            export ORACLE_SID=$ORACLE_SID
+            export PATH=\$ORACLE_HOME/bin:\$PATH
+
+            sqlplus -S /nolog << 'EOF'
             CONNECT $full_connect_string
             SET PAGESIZE 0 FEEDBACK OFF HEADING OFF
             $sql_query
