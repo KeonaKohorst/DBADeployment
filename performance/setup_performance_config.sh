@@ -1,4 +1,20 @@
 #!/bin/bash
+# ================================================================================================================
+# Filename: /opt/dba_deployment/performance/setup_performance.config.sh
+# Author(s): Alex Anthony
+# Date created: 2025-11-26
+# Date Last Modified: 2025-12-11
+# Use of AI: Gemini AI was used to troubleshoot and improve the script. All AI suggestions were verified and
+# 	     tested before use.
+# ================================================================================================================
+# Copyright: (c) Keona Gagnier
+# This software is licensed under the MIT license, located in the root directory of this project
+# ================================================================================================================
+# Description:
+# Called by deploy.sh. Changes default AWR 7-day retention to 14 days. Turns on Automatic SQL Tuning Advisor to
+# run daily. Deploys monitoring suite (global temporary table, grants, scheduler jobs).
+
+#
 SYS_PASS="$1"
 [ -z "$SYS_PASS" ] && { echo "ERROR: SYS password required"; exit 1; }
 

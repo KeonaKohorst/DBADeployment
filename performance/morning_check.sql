@@ -1,5 +1,13 @@
--- morning_check.sql
--- Run as: sqlplus -s monitoring/pass@ORCLPDB @morning_check.sql
+-- Filename: /opt/dba-deployment/performance/morning_check.sql
+-- Author(s): Alex Anthony
+-- Date created: 2025-11-26
+-- Date Last Modified: 2025-12-11
+
+-- Copyright: (c) Keona Gagnier
+-- This software is licensed under the MIT license, located in the root directory of this project
+
+-- Description:
+-- Grants privileges required for the MONITORING user to query performance views.
 
 SET ECHO OFF
 SET PAGESIZE 500
