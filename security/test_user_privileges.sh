@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# ==============================================================================
+# Filename: test_user_privileges.sh
+
+# Copyright (c) 2025 Cade Dempsey
+# This software is licensed under the MIT License, located in the root directory
+# of this project (LICENSE file).
+# ------------------------------------------------------------------------------
+# Author(s): Cade Dempsey
+# Date Created: December 8 2025
+# Last Modified: December 12 2025
+#
+# Use of AI: 
+# ChatGPT AI was used to help debug and improve the script. 
+# All AI-generated suggestions were reviewed, verified, and modified by the author 
+# before inclusion.
+
 # ===========================================================
 # Test User Privileges Script
 # ===========================================================
