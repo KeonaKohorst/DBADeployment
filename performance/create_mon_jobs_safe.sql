@@ -1,4 +1,17 @@
--- create_mon_jobs_safe.sql
+-- Filename: /opt/dba_deployment/performance/create_mon_jobs_safe.sql
+-- Author(s): Alex Anthony
+-- Date created: 2025-11-26
+-- Date Last Modified: 2025-12-11
+
+-- Copyright: (c) Keona Gagnier
+-- This software is licensed under the MIT license, located in the root directory of this project
+
+-- Use of AI: Gemini AI was used to troubleshoot and improve the script.
+-- Suggestions were reviewed, verified, and tested by the author.
+
+-- Description:
+-- Creates five monitoring + self-repair jobs under the MONITORING user.
+-- Drops pre-existing jobs under the MONITORING schema with the same names.
 
 BEGIN
   FOR j IN (SELECT job_name FROM user_scheduler_jobs WHERE job_name LIKE 'MON_%') LOOP

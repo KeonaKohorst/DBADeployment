@@ -1,14 +1,20 @@
 #!/bin/bash
+# ================================================================================================================
+# Filename: /opt/dba_deployment/performance/setup_performance.config.sh
+# Author(s): Alex Anthony
+# Date created: 2025-11-26
+# Date Last Modified: 2025-12-11
+# Use of AI: Gemini AI was used to troubleshoot and improve the script. All AI suggestions were verified and
+# 	     tested before use.
+# ================================================================================================================
+# Copyright: (c) Keona Gagnier
+# This software is licensed under the MIT license, located in the root directory of this project
+# ================================================================================================================
+# Description:
+# Called by deploy.sh. Changes default AWR 7-day retention to 14 days. Turns on Automatic SQL Tuning Advisor to
+# run daily. Deploys monitoring suite (global temporary table, grants, scheduler jobs).
 
-# Function to check the exit status of the previous command
-check_error() {
-    if [ $? -ne 0 ]; then
-        echo "!!! CRITICAL ERROR: Step failed ($1). Performance configuration ABORTED. !!!"
-        exit 1
-    fi
-}
-
-# --- Input Validation and Password Handling ---
+#
 SYS_PASS="$1"
 
 # Check if the SYS password was passed as an argument ($1)
